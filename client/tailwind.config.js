@@ -26,6 +26,7 @@ module.exports = {
       },
       animation: {
         "slide-in": "slide-in 0.5s ease-out",
+        spin: "spin 0.75s linear infinite",
       },
     },
   },

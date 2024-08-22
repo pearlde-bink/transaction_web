@@ -2,8 +2,12 @@
 import { AiFillAlipayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
+import React, { useContext, useState } from "react";
 
 import { Loader } from "./";
+
+import { TransactionContext } from "../context/TransactionContext";
+import { shortenAddress } from "../utils/shortenAddress";
 
 interface Props {
   placeholder: string;
@@ -29,10 +33,25 @@ const Input = ({ placeholder, name, type, value, handleChange }: Props) => {
   );
 };
 
-const handleSubmit = () => {};
-
 const Welcome = () => {
-  const connectWallet = () => {};
+  const {
+    connectWallet,
+    disconnectWallet,
+    currentAccount,
+    formData,
+    sendTransaction,
+    handleChange,
+    isLoading,
+  } = useContext(TransactionContext);
+
+  const handleSubmit = (e: any) => {
+    const { addressTo, amount, keyword, message } = formData;
+    e.preventDefault();
+
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    sendTransaction();
+  };
 
   return (
     <div className="flex w-full justify-center items-center">
@@ -45,13 +64,25 @@ const Welcome = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Binkoin.
           </p>
-          <button
+          {!currentAccount && ( //if connected, button is not shown
+            <button
+              type="button"
+              onClick={connectWallet}
+              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+            >
+              <p className="text-white text-base font-semibold">
+                Connect Wallet
+              </p>
+            </button>
+          )}
+
+          {/* <button
             type="button"
-            onClick={connectWallet}
+            onClick={disconnectWallet}
             className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
           >
-            <p className="text-white text-base font-semibold">Connect Wallet</p>
-          </button>
+            Disconnect
+          </button> */}
 
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Reliability</div>
@@ -73,7 +104,9 @@ const Welcome = () => {
                 <BsInfoCircle fontSize={17} color="#fff" />
               </div>
               <div>
-                <p className="text-white font-light text-sm">Address</p>
+                <p className="text-white font-light text-sm">
+                  {shortenAddress(currentAccount)}
+                </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Etherium
                 </p>
@@ -86,34 +119,30 @@ const Welcome = () => {
               placeholder="Address To"
               name="addressTo"
               type="text"
-              value=""
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Amount (ETH)"
               name="amount"
               type="number"
-              value=""
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Keyword (Gif)"
               name="keyword"
               type="text"
-              value=""
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Enter message"
               name="message"
               type="text"
-              value=""
-              handleChange={() => {}}
+              handleChange={handleChange}
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
 
-            {false ? (
+            {isLoading ? (
               <Loader />
             ) : (
               <button
