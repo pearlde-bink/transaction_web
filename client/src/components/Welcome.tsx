@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ //to bypass 'any' type error
-import { AiFillAlipayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import { Loader } from "./";
 
@@ -12,7 +11,6 @@ import { shortenAddress } from "../utils/shortenAddress";
 interface Props {
   placeholder: string;
   name: string;
-  value: any;
   type: string;
   handleChange: (e: any, name: string) => void;
 }
@@ -20,15 +18,14 @@ interface Props {
 const commonStyles =
   "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
-const Input = ({ placeholder, name, type, value, handleChange }: Props) => {
+const Input = ({ placeholder, name, type, handleChange }: Props) => {
   return (
     <input
       placeholder={placeholder}
       type={type}
       step="0.0001"
-      value={value}
       onChange={(e) => handleChange(e, name)}
-      className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
+      className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism placeholder:text-white-600"
     />
   );
 };
@@ -55,6 +52,9 @@ const Welcome = () => {
 
   return (
     <div className="flex w-full justify-center items-center">
+      <div id="stars" className="w-px h-px"></div>
+      <div id="star2"></div>
+      <div id="star3"></div>
       <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-4">
         <div className="flex flex-1 justify-start flex-col mf:mr-10">
           <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
@@ -64,7 +64,7 @@ const Welcome = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Binkoin.
           </p>
-          {!currentAccount && ( //if connected, button is not shown
+          {!currentAccount ? ( //if connected, button is not shown
             <button
               type="button"
               onClick={connectWallet}
@@ -74,16 +74,15 @@ const Welcome = () => {
                 Connect Wallet
               </p>
             </button>
+          ) : (
+            <button
+              type="button"
+              onClick={disconnectWallet}
+              className="flex flex-row justify-center items-center my-5 bg-[#ea3b75] p-3 rounded-full cursor-pointer hover:bg-[#bd2546]"
+            >
+              <p className="text-white text-base font-">Disconnect wallet</p>
+            </button>
           )}
-
-          {/* <button
-            type="button"
-            onClick={disconnectWallet}
-            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-          >
-            Disconnect
-          </button> */}
-
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${commonStyles}`}>Reliability</div>
             <div className={commonStyles}> Security</div>
@@ -114,30 +113,34 @@ const Welcome = () => {
             </div>
           </div>
 
-          <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
+          <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism placeholder:text-white">
             <Input
               placeholder="Address To"
               name="addressTo"
               type="text"
               handleChange={handleChange}
+              // className="placeholder:text-white"
             />
             <Input
               placeholder="Amount (ETH)"
               name="amount"
               type="number"
               handleChange={handleChange}
+              // className="placeholder:text-white"
             />
             <Input
               placeholder="Keyword (Gif)"
               name="keyword"
               type="text"
               handleChange={handleChange}
+              // className="placeholder:text-white"
             />
             <Input
               placeholder="Enter message"
               name="message"
               type="text"
               handleChange={handleChange}
+              // className="placeholder:text-white"
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
@@ -148,7 +151,7 @@ const Welcome = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#d3dbf2] rounded-full cursor-pointer"
               >
                 Send now
               </button>

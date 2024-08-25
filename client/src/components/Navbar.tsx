@@ -26,7 +26,7 @@ const Navbar = () => {
           <NavbarItem key={item + index} title={item} classProps="" />
         ))}
 
-        <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]">
+        <li className="bg-[#e329d3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#b825bd]">
           Login
         </li>
       </ul>
